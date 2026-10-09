@@ -1,25 +1,74 @@
 import 'package:flutter/material.dart';
-import 'package:wajiha_game_core/wajiha_game_core.dart';
-import 'game_screen.dart';
+import 'package:flutter/services.dart';
+import 'screens/splash_screen.dart';
+import 'services/audio_service.dart';
+import 'services/settings_service.dart';
+import 'theme/classroom_themes.dart';
 
-void main() => runApp(const PaperFlickApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
+  final settings = FlickSettings();
+  await settings.load();
+  final audio = FlickAudio();
+  audio.configure(
+    musicOn: settings.musicOn,
+    sfxOn: settings.sfxOn,
+    volume: settings.volume,
+  );
+  runApp(PaperFlickApp(settings: settings, audio: audio));
+}
 
-class PaperFlickApp extends StatelessWidget {
-  const PaperFlickApp({super.key});
+class PaperFlickApp extends StatefulWidget {
+  final FlickSettings settings;
+  final FlickAudio audio;
+  const PaperFlickApp({super.key, required this.settings, required this.audio});
+
+  @override
+  State<PaperFlickApp> createState() => _PaperFlickAppState();
+}
+
+class _PaperFlickAppState extends State<PaperFlickApp>
+    with WidgetsBindingObserver {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    widget.audio.dispose();
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    // Pause (not stop) on interruption so music resumes exactly where it
+    // left off; game screens freeze their engines on pause too.
+    if (state == AppLifecycleState.paused) {
+      widget.audio.onAppPaused();
+    } else if (state == AppLifecycleState.resumed) {
+      widget.audio.onAppResumed();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return GameShell(
-      variant: ShellVariant.zenStone,
-      title: 'Paper Flick',
-      tagline: 'One crumpled ball, one distant bin. Office legend status awaits!',
-      emoji: '🗑️',
-      slug: 'paperflick',
-      howToPlay:
-          '• Drag BACK from the paper ball to aim, release to flick! 📄\n• Land it in the bin to score. 3 balls per level.\n• Later levels bring WIND 💨 and a MOVING bin. Stay frosty!\n• 20 levels. Every basket counts — make them all!',
-      playerOptions: const [1],
-      supportsBots: false,
-      gameBuilder: (ctx, players, cb) => PaperFlickScreen(players: players, callbacks: cb),
+    return ListenableBuilder(
+      listenable: widget.settings,
+      builder: (_, _) => MaterialApp(
+        title: 'Paper Flick',
+        debugShowCheckedModeBanner: false,
+        theme: DeskTheme.appTheme(
+            DeskThemes.byId(widget.settings.themeId,
+                custom: widget.settings.customTheme)),
+        home: SplashScreen(audio: widget.audio, settings: widget.settings),
+      ),
     );
   }
 }
