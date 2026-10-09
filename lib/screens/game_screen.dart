@@ -295,7 +295,7 @@ class _GameScreenState extends State<GameScreen>
         ],
       ),
       body: Desk.backdrop(
-        theme: t,
+        t,
         child: Column(
           children: [
             Padding(

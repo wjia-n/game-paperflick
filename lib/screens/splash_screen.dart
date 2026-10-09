@@ -76,7 +76,7 @@ class _SplashScreenState extends State<SplashScreen>
 /// Company moment: the official WAJIHA winged-W logo, shown unchanged.
 class _CompanySplash extends StatelessWidget {
   final DeskThemeDef theme;
-  const _CompanySplash({super.key, required this.theme});
+  const _CompanySplash({required this.theme});
 
   @override
   Widget build(BuildContext context) {
@@ -109,12 +109,12 @@ class _CompanySplash extends StatelessWidget {
 class _GameSplash extends StatelessWidget {
   final DeskThemeDef theme;
   final AnimationController loader;
-  const _GameSplash({super.key, required this.theme, required this.loader});
+  const _GameSplash({required this.theme, required this.loader});
 
   @override
   Widget build(BuildContext context) {
     return Desk.backdrop(
-      theme: theme,
+      theme,
       child: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,

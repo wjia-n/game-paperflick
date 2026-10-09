@@ -64,7 +64,7 @@ class _PaperFlickAppState extends State<PaperFlickApp>
       builder: (_, _) => MaterialApp(
         title: 'Paper Flick',
         debugShowCheckedModeBanner: false,
-        theme: DeskTheme.appTheme(
+        theme: DeskThemeDef.appTheme(
             DeskThemes.byId(widget.settings.themeId,
                 custom: widget.settings.customTheme)),
         home: SplashScreen(audio: widget.audio, settings: widget.settings),

@@ -108,7 +108,7 @@ class FlickSettings extends ChangeNotifier {
 
   DeskThemeDef get customTheme {
     Color c(String k) => Color(customColors[k] ?? 0xFF000000);
-    const base = DeskThemes.all[0]; // Classic Classroom
+    final base = DeskThemes.all[0]; // Classic Classroom
     return DeskThemeDef(
       id: 'custom',
       name: 'My Creation',

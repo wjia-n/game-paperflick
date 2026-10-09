@@ -79,7 +79,7 @@ class _ProScreenState extends State<ProScreen> {
     final s = widget.settings;
     final store = widget.store;
     return Desk.backdrop(
-      theme: t,
+      t,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
@@ -133,7 +133,7 @@ class _ProScreenState extends State<ProScreen> {
 class _ComparisonCard extends StatelessWidget {
   final DeskThemeDef theme;
   final bool isPro;
-  const _ComparisonCard({super.key, required this.theme, required this.isPro});
+  const _ComparisonCard({required this.theme, required this.isPro});
 
   @override
   Widget build(BuildContext context) {
@@ -219,7 +219,7 @@ class _ComparisonCard extends StatelessWidget {
 class _Cell extends StatelessWidget {
   final Object value; // bool | String
   final DeskThemeDef theme;
-  const _Cell({super.key, required this.value, required this.theme});
+  const _Cell({required this.value, required this.theme});
 
   @override
   Widget build(BuildContext context) {
@@ -248,7 +248,6 @@ class _BuyCard extends StatelessWidget {
   final StoreService store;
   final FlickAudio audio;
   const _BuyCard({
-    super.key,
     required this.theme,
     required this.settings,
     required this.store,
@@ -341,7 +340,7 @@ class _TipsCard extends StatelessWidget {
   final StoreService store;
   final FlickAudio audio;
   const _TipsCard(
-      {super.key, required this.theme, required this.store, required this.audio});
+      {required this.theme, required this.store, required this.audio});
 
   @override
   Widget build(BuildContext context) {
@@ -400,7 +399,7 @@ class _TipChip extends StatelessWidget {
   final String label;
   final VoidCallback onTap;
   const _TipChip(
-      {super.key, required this.theme, required this.label, required this.onTap});
+      {required this.theme, required this.label, required this.onTap});
 
   @override
   Widget build(BuildContext context) {

@@ -43,7 +43,7 @@ class _CustomThemeScreenState extends State<CustomThemeScreen> {
     final t = _t;
     final s = widget.settings;
     return Desk.backdrop(
-      theme: t,
+      t,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(

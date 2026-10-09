@@ -31,7 +31,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     final s = widget.settings;
     final a = widget.audio;
     return Desk.backdrop(
-      theme: t,
+      t,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(

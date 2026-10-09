@@ -130,7 +130,6 @@ class PaperFlickEngine extends ChangeNotifier {
   Timer? _attackTimer; // score-attack countdown
   bool _paused = false;
   DateTime? _pausedAt;
-  Duration _pauseAccum = Duration.zero; // pause time within current phase
   bool _disposed = false;
 
   bool get isPaused => _paused;
@@ -212,7 +211,6 @@ class PaperFlickEngine extends ChangeNotifier {
     bestStreakRun = 0;
     ballsLeft = ballsPerLevel.toInt();
     timeLeft = 60;
-    _pauseAccum = Duration.zero;
     _paused = false;
     spec = specFor(level, difficulty, mode);
     _enterAim('Level 1 — drag back, release to flick!');
@@ -239,7 +237,6 @@ class PaperFlickEngine extends ChangeNotifier {
   void _setPhase(FlickPhase p, {Duration? timeout}) {
     _phaseTimer?.cancel();
     phase = p;
-    _pauseAccum = Duration.zero;
     _phaseDeadline =
         timeout == null ? null : DateTime.now().add(timeout);
   }

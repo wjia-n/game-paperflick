@@ -124,7 +124,7 @@ class StoreService {
         purchaseParam: PurchaseParam(productDetails: product),
       );
     } catch (_) {
-      purchaseError.value = false;
+      purchaseInProgress.value = false;
       purchaseError.value = 'Purchase failed — please try again.';
     }
   }

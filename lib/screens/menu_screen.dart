@@ -149,7 +149,7 @@ class _MenuScreenState extends State<MenuScreen> {
     final t = _t;
     final s = _s;
     return Desk.backdrop(
-      theme: t,
+      t,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: SafeArea(
@@ -552,7 +552,7 @@ class _WoodButton extends StatelessWidget {
   final String label;
   final VoidCallback onTap;
   const _WoodButton(
-      {super.key, required this.theme, required this.label, required this.onTap});
+      {required this.theme, required this.label, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -575,7 +575,7 @@ class _Section extends StatelessWidget {
   final String title;
   final Widget child;
   const _Section(
-      {super.key, required this.theme, required this.title, required this.child});
+      {required this.theme, required this.title, required this.child});
 
   @override
   Widget build(BuildContext context) {
@@ -601,7 +601,6 @@ class _PickChip extends StatelessWidget {
   final bool locked;
   final VoidCallback onTap;
   const _PickChip({
-    super.key,
     required this.theme,
     required this.label,
     required this.selected,
@@ -648,7 +647,6 @@ class _StyleGrid extends StatelessWidget {
   final Color? Function(int) swatchFor;
 
   const _StyleGrid({
-    super.key,
     required this.theme,
     required this.count,
     required this.selected,
@@ -744,7 +742,7 @@ class _Stat extends StatelessWidget {
   final DeskThemeDef theme;
   final String label;
   final String value;
-  const _Stat({super.key, required this.theme, required this.label, required this.value});
+  const _Stat({required this.theme, required this.label, required this.value});
 
   @override
   Widget build(BuildContext context) {
@@ -764,8 +762,7 @@ class _MenuIcon extends StatelessWidget {
   final String label;
   final VoidCallback onTap;
   const _MenuIcon(
-      {super.key,
-      required this.theme,
+      {required this.theme,
       required this.icon,
       required this.label,
       required this.onTap});
