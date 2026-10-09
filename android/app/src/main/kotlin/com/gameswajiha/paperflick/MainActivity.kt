@@ -1,4 +1,4 @@
-package com.gameswajiha.tictactoe
+package com.gameswajiha.paperflick
 
 import io.flutter.embedding.android.FlutterActivity
 
