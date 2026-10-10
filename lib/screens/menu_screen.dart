@@ -37,19 +37,10 @@ class _MenuScreenState extends State<MenuScreen> {
     super.initState();
     _store = StoreService();
     _store.init();
-    _store.proPurchased.addListener(_onPro);
     _store.lastThanks.addListener(_onThanks);
   }
 
-  void _onPro() {
-    if (_store.proPurchased.value && mounted) {
-      _s.setPro(true);
-      _store.proPurchased.value = false;
-      _a.win();
-      setState(() {});
-    }
-  }
-
+  
   void _onThanks() {
     final msg = _store.lastThanks.value;
     if (msg == null || !mounted) return;
@@ -67,7 +58,6 @@ class _MenuScreenState extends State<MenuScreen> {
   @override
   void dispose() {
     _store.lastThanks.removeListener(_onThanks);
-    _store.proPurchased.removeListener(_onPro);
     _store.dispose();
     super.dispose();
   }

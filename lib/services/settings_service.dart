@@ -88,7 +88,7 @@ class FlickSettings extends ChangeNotifier {
   int bestScore = 0;
   int bestStreak = 0;
   int bestLevel = 0;
-  bool isPro = false;
+  bool isPro = true; // everything unlocked — no Pro version
 
   /// Custom theme color overrides (ARGB ints), applied over Classic Classroom.
   Map<String, int> customColors = Map.of(_defaultCustomColors);
@@ -171,7 +171,7 @@ class FlickSettings extends ChangeNotifier {
     bestScore = p.getInt(_kBestScore) ?? 0;
     bestStreak = p.getInt(_kBestStreak) ?? 0;
     bestLevel = p.getInt(_kBestLevel) ?? 0;
-    isPro = p.getBool(_kIsPro) ?? false;
+    isPro = true; // everything unlocked
     for (final k in _defaultCustomColors.keys) {
       customColors[k] = p.getInt('$_kCustomPrefix$k') ?? _defaultCustomColors[k]!;
     }
