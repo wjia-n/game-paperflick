@@ -17,6 +17,9 @@ import 'package:audioplayers/audioplayers.dart';
 ///   resumes exactly where it left off instead of restarting or dying.
 /// - Every public method catches player errors; audio can never crash the app.
 class FlickAudio {
+  /// Per-game pitch character (paperflick): 0.97x. Makes SFX unique.
+  static const double _pitchMul = 0.970;
+
   static const int _rate = 22050;
   final AudioPlayer _sfx = AudioPlayer();
   final AudioPlayer _music = AudioPlayer();
@@ -103,6 +106,8 @@ class FlickAudio {
 
   List<double> _tone(double freq, double secs,
       {double freqEnd = 0, double attack = 0.02, double harmonics = 0.25}) {
+    freq *= _pitchMul;
+    freqEnd *= _pitchMul;
     final n = (_rate * secs).round();
     final out = List<double>.filled(n, 0);
     for (int i = 0; i < n; i++) {
@@ -218,38 +223,53 @@ class FlickAudio {
       _cache.putIfAbsent(key, () => _wav(build()));
 
   Uint8List _menuBytes() => _clip('music_menu', () {
-        // Cozy after-school study pad: warm C – Am – F – G, 16s loop.
-        final seq = [
-          [261.63, 329.63, 392.0], // C
-          [220.0, 261.63, 329.63], // Am
-          [174.61, 220.0, 261.63], // F
-          [196.0, 246.94, 293.66], // G
-        ];
-        final out = <double>[];
-        for (final chord in seq) {
-          out.addAll(_padChord(chord, 4.0));
-        }
-        return out;
-      });
-
-  Uint8List _gameBytes() => _clip('music_game', () {
-        // Light upbeat pencil-tap melody over a soft drone, 12s loop.
-        final drone = _padChord([146.83, 220.0], 12.0);
-        final plucks = [
-          523.25, 587.33, 659.25, 784.0, 659.25, 587.33,
-          523.25, 440.0, 523.25, 659.25, 587.33, 440.0
-        ];
-        final n = (_rate * 12).round();
-        final out = List<double>.from(drone);
-        for (int k = 0; k < plucks.length; k++) {
-          final start = (n * k / plucks.length).round();
-          final tone = _tone(plucks[k], 0.45, harmonics: 0.35);
-          for (int i = 0; i < tone.length && start + i < n; i++) {
-            out[start + i] += tone[i] * 0.32;
+        // A# bass + melody 5 – 3 – 0 – 4, 16s loop. Unique to paperflick.
+        final bassNotes = [196.00, 155.56, 116.54, 174.62];
+        final melNotes = [1174.64, 932.32, 698.46, 1046.50];
+        final out = List<double>.filled((_rate * 16).round(), 0);
+        final segLen = (_rate * 4).round();
+        for (int s = 0; s < 4; s++) {
+          final bass = _tone(bassNotes[s], 3.5, harmonics: 0.4);
+          final mel = _tone(melNotes[s], 1.2, harmonics: 0.25);
+          for (int i = 0; i < bass.length && s * segLen + i < out.length; i++) {
+            out[s * segLen + i] += bass[i] * 0.5;
+          }
+          final melStart = s * segLen + segLen ~/ 4;
+          for (int i = 0; i < mel.length && melStart + i < out.length; i++) {
+            out[melStart + i] += mel[i] * 0.35;
           }
         }
         return out;
       });
+
+
+  Uint8List _gameBytes() => _clip('music_game', () {
+        // A# waltz 5 – 3 – 0 – 4, 12s loop. Unique to paperflick.
+        final seq = [
+          [391.99, 466.16, 587.32],
+          [311.12, 391.99, 466.16],
+          [233.08, 293.66, 349.23],
+          [349.23, 440.00, 523.25]
+        ];
+        final out = <double>[];
+        for (final chord in seq) {
+          // Waltz: bass on 1, chords on 2 and 3
+          final bass = _tone(chord[0] / 2, 0.8, harmonics: 0.3);
+          final ch1 = _padChord([chord[1], chord[2]], 0.7);
+          final ch2 = _padChord([chord[1], chord[2]], 0.7);
+          out.addAll(bass);
+          final gap1 = List<double>.filled((_rate * 0.2).round(), 0);
+          out.addAll(gap1);
+          out.addAll(ch1);
+          final gap2 = List<double>.filled((_rate * 0.2).round(), 0);
+          out.addAll(gap2);
+          out.addAll(ch2);
+          final gap3 = List<double>.filled((_rate * 0.2).round(), 0);
+          out.addAll(gap3);
+        }
+        return out;
+      });
+
 
   // ------------------------------------------------------------------ SFX
   Future<void> _play(Uint8List bytes) async {
