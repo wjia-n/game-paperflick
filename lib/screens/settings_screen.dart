@@ -3,6 +3,7 @@ import '../services/audio_service.dart';
 import '../services/settings_service.dart';
 import '../theme/classroom_themes.dart';
 import '../widgets/name_editor.dart';
+import '../transfer/transfer_ui.dart';
 
 /// Paper Flick settings: audio toggles + volume, player name, stats.
 class SettingsScreen extends StatefulWidget {
@@ -54,6 +55,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               padding:
                   const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
               children: [
+              TransferSaveTile(gameSlug: 'paperflick'),
                 _row(t, 'Your name', s.playerName, Icons.edit, _editName),
                 _toggle(t, 'Music', s.musicOn, (v) {
                   a.click();
