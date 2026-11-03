@@ -430,7 +430,7 @@ class _MenuScreenState extends State<MenuScreen> {
                             const SizedBox(width: 10),
                             Expanded(
                               child: Text(
-                                defaultTargetPlatform == TargetPlatform.iOS ? '⭐ Gold Star — thank you for supporting Paper Flick' : 'Go PRO: all themes, Trickshot mode, custom creator',
+                                defaultTargetPlatform == TargetPlatform.iOS ? '⭐ Gold Star — thank you!' : 'Go PRO: all themes, Trickshot mode, custom creator',
                                 style: Desk.body(14,
                                     theme: t,
                                     color: Colors.white)
