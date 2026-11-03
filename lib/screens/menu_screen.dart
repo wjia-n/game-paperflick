@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:share_plus/share_plus.dart';
@@ -210,7 +211,7 @@ class _MenuScreenState extends State<MenuScreen> {
                             color: t.accent.withValues(alpha: 0.25),
                             border: Border.all(color: t.accent),
                           ),
-                          child: Text('✦ PRO',
+                          child: Text(defaultTargetPlatform == TargetPlatform.iOS ? '✦ ⭐' : '✦ PRO',
                               style: Desk.label(12, theme: t)),
                         ),
                     ],
@@ -429,7 +430,7 @@ class _MenuScreenState extends State<MenuScreen> {
                             const SizedBox(width: 10),
                             Expanded(
                               child: Text(
-                                'Go PRO: all themes, Trickshot mode, custom creator',
+                                defaultTargetPlatform == TargetPlatform.iOS ? '⭐ Gold Star — thank you for supporting Paper Flick' : 'Go PRO: all themes, Trickshot mode, custom creator',
                                 style: Desk.body(14,
                                     theme: t,
                                     color: Colors.white)
